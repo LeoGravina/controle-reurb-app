@@ -1,0 +1,10 @@
+Arquivo para ignorar arquivos desnecessários no Git
+Dependências do Node (caso use no futuro)
+node_modules/
+
+Arquivos de ambiente locais (boa prática)
+.env
+
+Arquivos de sistema operacional
+.DS_Store
+Thumbs.db

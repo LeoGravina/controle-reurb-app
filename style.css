@@ -1,0 +1,149 @@
+/* --- 1. VARIÁVEIS GLOBAIS E RESET --- */
+:root {
+    --primary-color: #007AFF;
+    --primary-hover: #0056b3;
+    --secondary-color: #6c757d;
+    --secondary-hover: #5a6268;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-color: #212529;
+    --text-light: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --danger-color: #dc3545;
+    --danger-hover: #c82333;
+    --success-color: #198754;
+    --success-hover: #157347;
+    --font-family: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* --- 2. CABEÇALHO E BARRA DE FERRAMENTAS --- */
+.main-header { background-color: var(--card-bg); padding: 20px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 40px; }
+.main-header h1 { font-size: 1.75rem; margin-bottom: 20px; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+.header-actions { display: flex; align-items: center; gap: 15px; }
+#buscaInput { flex-grow: 1; }
+#buscaInput, #filtroFase { padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; transition: all 0.2s ease; background-color: var(--card-bg); color: var(--text-color); font-family: var(--font-family); }
+#buscaInput:focus, #filtroFase:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
+
+/* --- 3. BOTÕES --- */
+.primary-btn, .secondary-btn, .danger-btn, .success-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
+.primary-btn { background-color: var(--primary-color); color: white; }
+.primary-btn:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.secondary-btn { background-color: #e9ecef; color: var(--text-color); }
+.secondary-btn:hover { background-color: #ced4da; }
+.danger-btn { background-color: var(--danger-color); color: white; }
+.danger-btn:hover { background-color: var(--danger-hover); }
+.success-btn { background-color: var(--success-color); color: white; }
+.success-btn:hover { background-color: var(--success-hover); }
+
+/* --- 4. GRID DE CARDS --- */
+#nucleosGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+.nucleo-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); padding: 25px; display: flex; flex-direction: column; transition: all 0.2s ease; }
+.nucleo-card:hover { transform: translateY(-5px); box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08); }
+.card-header h2 { font-size: 1.25rem; margin-bottom: 5px; }
+.card-header p { font-size: 0.9rem; color: var(--text-light); }
+.card-body { flex-grow: 1; display: flex; flex-direction: column; gap: 15px; margin: 20px 0 25px 0; }
+.info-item { display: flex; justify-content: space-between; align-items: center; }
+.info-item .label { font-weight: 500; color: var(--text-light); }
+.info-item .value { font-weight: 500; }
+.status-tag, .pendencia-tag { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; color: white; }
+
+/* CORES PARA AS FASES */
+.status-tag.fase-instauracao { background-color: #007AFF; }
+.status-tag.fase-notificacao-e-buscas { background-color: #fd7e14; }
+.status-tag.fase-urbanismo { background-color: #6f42c1; }
+.status-tag.fase-ambiental { background-color: #20c997; }
+.status-tag.fase-juridico { background-color: #4B0082; }
+.status-tag.fase-cartorio { background-color: #8B4513; }
+.status-tag.fase-titulacao { background-color: #ffc107; color: #212529;}
+.status-tag.fase-finalizado { background-color: #198754; }
+
+.pendencia-tag.sim { background-color: var(--danger-color); }
+.pendencia-tag.nao { background-color: var(--success-color); }
+.card-footer { display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: auto; }
+
+.icon-btn { background: none; border: 1px solid var(--border-color); border-radius: 8px; width: 38px; height: 38px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+.icon-btn svg { display: block; width: 25px; height: 25px; stroke: var(--text-light); transition: all 0.2s ease; }
+.icon-btn:hover { border-color: var(--primary-color); background-color: #f8f9fa; }
+.icon-btn:hover svg { stroke: var(--primary-color); }
+.delete-btn:hover { border-color: var(--danger-color); }
+.delete-btn:hover svg { stroke: var(--danger-color); }
+
+/* --- 5. MODAIS --- */
+dialog { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 30px; width: 90%; max-width: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; }
+dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(3px); z-index: 999; }
+dialog h2 { margin-bottom: 10px; }
+dialog p { margin-bottom: 25px; color: var(--text-light); }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+.form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 1rem; }
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 30px; }
+#gerenciarForm fieldset { border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 25px; }
+#gerenciarForm legend { font-weight: 700; padding: 0 10px; }
+.status-info { margin-bottom: 15px; padding: 10px; border-radius: 6px; background-color: #e9ecef; }
+#lancarPendenciaArea .danger-btn { margin-top: 10px; }
+
+/* --- 6. DARK MODE --- */
+:root[data-theme="dark"] { --bg-color: #121212; --card-bg: #1e1e1e; --text-color: #e0e0e0; --text-light: #a0a0a0; --border-color: #333; --shadow: 0 4px 6px rgba(0, 0, 0, 0.2); }
+:root[data-theme="dark"] .secondary-btn { background-color: #333; color: var(--text-color); }
+:root[data-theme="dark"] .secondary-btn:hover { background-color: #444; }
+:root[data-theme="dark"] #buscaInput, :root[data-theme="dark"] .form-group input, :root[data-theme="dark"] .form-group select, :root[data-theme="dark"] #filtroFase { background-color: #2c2c2c; color: var(--text-color); border-color: var(--border-color); }
+:root[data-theme="dark"] #buscaInput:focus, :root[data-theme="dark"] #filtroFase:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
+:root[data-theme="dark"] dialog { background-color: var(--card-bg); color: var(--text-color); }
+:root[data-theme="dark"] .status-info { background-color: #2c2c2c; }
+:root[data-theme="dark"] .icon-btn:hover { background-color: #2c2c2c; }
+
+/* --- 7. BOTÃO DE TEMA --- */
+.theme-switch-wrapper { display: flex; align-items: center; }
+.theme-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.theme-switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
+input:checked + .slider { background-color: var(--primary-color); }
+input:focus + .slider { box-shadow: 0 0 1px var(--primary-color); }
+input:checked + .slider:before { transform: translateX(24px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+/* --- 8. MODAL DE CONFIRMAÇÃO --- */
+.confirm-dialog { text-align: center; }
+.confirm-icon { stroke: var(--danger-color); margin-bottom: 15px; }
+#confirmDeleteModal h2 { margin-bottom: 10px; font-size: 1.5rem; }
+#confirmDeleteModal p { margin-bottom: 25px; color: var(--text-light); }
+
+/* --- 9. TRANSIÇÕES SUAVES --- */
+body, .main-header, .nucleo-card, dialog, .secondary-btn, #buscaInput, .form-group input, .form-group select, .status-info, #filtroFase { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+
+/* --- 10. NOTIFICAÇÃO TOAST --- */
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1001; /* Mais alto que o z-index do modal (1000) */
+    left: 50%;
+    transform: translateX(-50%);
+    top: -100px; /* Começa fora da tela */
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    opacity: 0;
+    transition: visibility 0.5s, opacity 0.5s, top 0.5s ease-in-out;
+}
+
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+    top: 30px; /* Desliza para dentro da tela */
+}
+
