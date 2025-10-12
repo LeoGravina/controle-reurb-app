@@ -1,130 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Controle de Processos REURB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <header class="main-header">
-        <div class="container">
-            <h1>Dashboard de REURB</h1>
-            <div class="toolbar">
-                <input type="search" id="buscaInput" placeholder="Buscar por nome ou decreto...">
-                <select id="filtroFase"></select>
-                <div class="header-actions">
-                    <div class="theme-switch-wrapper">
-                        <label class="theme-switch">
-                            <input type="checkbox" id="theme-toggle">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <button id="abrirModalBtn" class="primary-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        <span>Novo Núcleo</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="container">
-        <div id="nucleosGrid">
-            <!-- Os cards dos núcleos serão inseridos aqui pelo script.js -->
-        </div>
-    </main>
-
-    <!-- Modal para Adicionar Novo Núcleo -->
-    <dialog id="nucleoModal">
-        <form id="nucleoForm">
-            <h2 id="modalTitle">Adicionar Novo Núcleo</h2>
-            <p>Preencha as informações básicas do núcleo de regularização.</p>
-            <div class="form-group">
-                <label for="nomeNucleo">Nome do Núcleo:</label>
-                <input type="text" id="nomeNucleo" required>
-            </div>
-            <div class="form-group">
-                <label for="dataInstauracao">Data de Instauração:</label>
-                <input type="date" id="dataInstauracao" required>
-            </div>
-            <div class="form-group">
-                <label for="decretoInstauracao">Nº do Decreto de Instauração:</label>
-                <input type="text" id="decretoInstauracao" required>
-            </div>
-            <div class="form-group">
-                <label for="responsavelInput">Responsável pela Instauração:</label>
-                <input type="text" id="responsavelInput" placeholder="Nome do responsável inicial" required>
-            </div>
-            <div class="form-actions">
-                <button type="button" id="fecharModalBtn" class="secondary-btn">Cancelar</button>
-                <button type="submit" class="primary-btn">Salvar</button>
-            </div>
-        </form>
-    </dialog>
-
-    <!-- Modal para Gerenciar Fases e Pendências -->
-    <dialog id="gerenciarModal">
-        <form id="gerenciarForm" onsubmit="return false;">
-            <h2 id="gerenciarModalTitle">Gerenciar Núcleo</h2>
-            <input type="hidden" id="gerenciarNucleoId">
-
-            <fieldset>
-                <legend>Mudar Fase do Processo</legend>
-                <div class="form-group">
-                    <label for="faseSelect">Nova Fase:</label>
-                    <select id="faseSelect"></select>
-                </div>
-                <div class="form-group">
-                    <label for="atribuidoInput">Atribuir a:</label>
-                    <input type="text" id="atribuidoInput" placeholder="Nome do responsável">
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Gerenciar Pendência</legend>
-                <p id="pendenciaStatus" class="status-info"></p>
-                <div id="lancarPendenciaArea">
-                    <div class="form-group">
-                        <label for="pendenciaInput">Descrição da Pendência:</label>
-                        <input type="text" id="pendenciaInput" placeholder="Ex: Falta documento X">
-                    </div>
-                    <button type="button" id="lancarPendenciaBtn" class="danger-btn">Lançar Pendência</button>
-                </div>
-                <button type="button" id="resolverPendenciaBtn" class="success-btn" style="display: none;">Marcar como Resolvida</button>
-            </fieldset>
-
-            <div class="form-actions">
-                <button type="button" id="fecharGerenciarModalBtn" class="secondary-btn">Fechar</button>
-                <button type="button" id="salvarFaseBtn" class="primary-btn">Atualizar Fase</button>
-            </div>
-        </form>
-    </dialog>
-
-    <!-- Modal de Confirmação de Exclusão -->
-    <dialog id="confirmDeleteModal">
-        <div class="confirm-dialog">
-            <svg class="confirm-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            <h2>Confirmar Exclusão</h2>
-            <p>Você tem certeza que deseja excluir este núcleo? Esta ação não pode ser desfeita.</p>
-            <div class="form-actions">
-                <button type="button" id="cancelDeleteBtn" class="secondary-btn">Cancelar</button>
-                <button type="button" id="confirmDeleteBtn" class="danger-btn">Sim, Excluir</button>
-            </div>
-        </div>
-    </dialog>
-    
-    <!-- Elemento Toast para Notificações -->
-    <div id="toast"></div>
-
-    <!-- Scripts do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
-    
-    <script src="script.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
