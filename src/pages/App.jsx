@@ -1,19 +1,18 @@
-// src/App.jsx
+// src/pages/App.jsx
 
 import { useState, useEffect, useMemo } from 'react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { nucleosCollection } from './firebase/config';
-import Header from './components/Header';
-import NucleosGrid from './components/NucleosGrid';
-import AddNucleoModal from './components/AddNucleoModal';
-import ManageNucleoModal from './components/ManageNucleoModal';
-import ConfirmDeleteModal from './components/ConfirmDeleteModal';
-import ThemeToggle from './components/ThemeToggle';
+import { nucleosCollection } from '../firebase/config';
+import { useAuth } from '../context/AuthContext';
+import Header from '../components/Header';
+import NucleosGrid from '../components/NucleosGrid';
+import AddNucleoModal from '../components/AddNucleoModal';
+import ManageNucleoModal from '../components/ManageNucleoModal';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 
 const FASES = ["Instauração", "Notificação e Buscas", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado"];
 
 function App() {
+    const { theme, setTheme } = useAuth(); // Pega o tema do contexto
     const [todosNucleos, setTodosNucleos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [busca, setBusca] = useState('');
@@ -27,8 +26,7 @@ function App() {
 
     useEffect(() => {
         const unsubscribe = nucleosCollection.orderBy("nome").onSnapshot(snapshot => {
-            const nucleosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setTodosNucleos(nucleosData);
+            setTodosNucleos(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
             setLoading(false);
         });
         return () => unsubscribe();
@@ -66,7 +64,18 @@ function App() {
 
     return (
         <>
-            <Header {...{ busca, onBuscaChange: setBusca, filtroFase, onFiltroFaseChange: setFiltroFase, onAbrirModal: () => setAddModalOpen(true), fases: FASES, ordenacao, onOrdenacaoChange: setOrdenacao }} />
+            <Header 
+                busca={busca}
+                onBuscaChange={setBusca}
+                filtroFase={filtroFase}
+                onFiltroFaseChange={setFiltroFase}
+                onAbrirModal={() => setAddModalOpen(true)}
+                fases={FASES}
+                ordenacao={ordenacao}
+                onOrdenacaoChange={setOrdenacao}
+                theme={theme}
+                setTheme={setTheme}
+            />
             <main className="container">
                 {loading ? <p>Carregando núcleos...</p> : 
                     <NucleosGrid 
@@ -78,22 +87,13 @@ function App() {
                 }
             </main>
             
-            <AddNucleoModal {...{ isOpen: isAddModalOpen, onClose: () => setAddModalOpen(false), fases: FASES }} />
-
+            <AddNucleoModal isOpen={isAddModalOpen} onClose={() => setAddModalOpen(false)} fases={FASES} />
             {selectedNucleo && (
               <>
-                <ManageNucleoModal {...{ isOpen: isManageModalOpen, onClose: () => setManageModalOpen(false), nucleo: selectedNucleo, fases: FASES, initialMode: initialModalMode }} />
-                <ConfirmDeleteModal {...{ isOpen: isDeleteModalOpen, onClose: () => setDeleteModalOpen(false), nucleo: selectedNucleo }} />
+                <ManageNucleoModal isOpen={isManageModalOpen} onClose={() => setManageModalOpen(false)} nucleo={selectedNucleo} fases={FASES} initialMode={initialModalMode} />
+                <ConfirmDeleteModal isOpen={isDeleteModalOpen} onClose={() => setDeleteModalOpen(false)} nucleo={selectedNucleo} />
               </>
             )}
-            
-            {/* O ToastContainer fica aqui para notificações GERAIS, caso precise no futuro */}
-            <ToastContainer
-                position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                theme="light"
-            />
         </>
     );
 }
