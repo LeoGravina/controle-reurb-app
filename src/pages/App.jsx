@@ -1,9 +1,8 @@
 // src/pages/App.jsx
 
 import { useState, useEffect, useMemo } from 'react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { nucleosCollection } from '../firebase/config';
+import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import NucleosGrid from '../components/NucleosGrid';
 import AddNucleoModal from '../components/AddNucleoModal';
@@ -13,6 +12,7 @@ import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 const FASES = ["Instauração", "Notificação e Buscas", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado"];
 
 function App() {
+    const { theme, setTheme } = useAuth(); // Pega o tema do contexto
     const [todosNucleos, setTodosNucleos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [busca, setBusca] = useState('');
@@ -23,18 +23,6 @@ function App() {
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedNucleo, setSelectedNucleo] = useState(null);
     const [initialModalMode, setInitialModalMode] = useState('view');
-    
-    const [theme, setTheme] = useState(() => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) return savedTheme;
-        const userPrefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-        return userPrefersDark ? 'dark' : 'light';
-    });
-
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
 
     useEffect(() => {
         const unsubscribe = nucleosCollection.orderBy("nome").onSnapshot(snapshot => {
@@ -81,7 +69,7 @@ function App() {
                 onBuscaChange={setBusca}
                 filtroFase={filtroFase}
                 onFiltroFaseChange={setFiltroFase}
-                onAbrirModal={() => setAddModalOpen(true)} // A função de abrir o modal volta para cá
+                onAbrirModal={() => setAddModalOpen(true)}
                 fases={FASES}
                 ordenacao={ordenacao}
                 onOrdenacaoChange={setOrdenacao}
@@ -106,8 +94,6 @@ function App() {
                 <ConfirmDeleteModal isOpen={isDeleteModalOpen} onClose={() => setDeleteModalOpen(false)} nucleo={selectedNucleo} />
               </>
             )}
-            
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme={theme} />
         </>
     );
 }

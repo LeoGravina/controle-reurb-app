@@ -3,7 +3,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { db } from '../firebase/config'; // Precisamos do db aqui
+import { db } from '../firebase/config';
 
 const AuthContext = createContext();
 
@@ -13,34 +13,60 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
-    const [userProfile, setUserProfile] = useState(null); // NOVO: Estado para o perfil do Firestore
+    const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // Gerenciamento do Tema agora vive aqui, no topo da árvore
+    const [theme, setTheme] = useState(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) return savedTheme;
+        const userPrefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+        return userPrefersDark ? 'dark' : 'light';
+    });
+
     useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    useEffect(() => {
+        let unsubscribeProfile; // Variável para o listener do perfil
+
+        const unsubscribeAuth = firebase.auth().onAuthStateChanged(user => {
             setCurrentUser(user);
+
+            // Se o listener do perfil anterior existir, cancela ele
+            if (unsubscribeProfile) unsubscribeProfile();
+
             if (user) {
-                // Se houver um usuário, busque seu perfil no Firestore
+                // USA O onSnapshot para ouvir em tempo real
                 const userDocRef = db.collection('users').doc(user.uid);
-                const userDoc = await userDocRef.get();
-                if (userDoc.exists) {
-                    setUserProfile(userDoc.data());
-                } else {
-                    // Opcional: Lidar com o caso de um usuário autenticado não ter perfil
-                    setUserProfile(null); 
-                }
+                unsubscribeProfile = userDocRef.onSnapshot(doc => {
+                    if (doc.exists) {
+                        setUserProfile(doc.data());
+                    } else {
+                        setUserProfile(null); 
+                    }
+                    setLoading(false);
+                });
             } else {
                 setUserProfile(null);
+                setLoading(false);
             }
-            setLoading(false);
         });
 
-        return unsubscribe;
+        // Função de limpeza
+        return () => {
+            unsubscribeAuth();
+            if (unsubscribeProfile) unsubscribeProfile();
+        };
     }, []);
 
     const value = {
         currentUser,
-        userProfile // NOVO: Fornecendo o perfil para o resto do app
+        userProfile,
+        theme,     // Fornece o tema
+        setTheme   // Fornece a função para alterar o tema
     };
     
     if (loading) {
