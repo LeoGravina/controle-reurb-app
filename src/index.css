@@ -37,6 +37,7 @@ body { font-family: var(--font-family); background-color: var(--bg-color); color
 .status-tag, .pendencia-tag { padding: 5px 12px; border-radius: 20px; font-size: .8rem; font-weight: 700; color: white; }
 .status-tag.fase-instauracao { background-color: #007AFF; }
 .status-tag.fase-notificacao-e-buscas { background-color: #fd7e14; }
+.status-tag.fase-analise-de-cadastro-socio-economico { background-color: #d63384; }
 .status-tag.fase-urbanismo { background-color: #6f42c1; }
 .status-tag.fase-ambiental { background-color: #20c997; }
 .status-tag.fase-juridico { background-color: #4B0082; }
@@ -157,7 +158,16 @@ input:checked+.slider .icon-container.moon { opacity: 1; transform: rotate(0deg)
 .profile-section p { font-size: 0.9rem; color: var(--text-light); margin-top: -15px; margin-bottom: 30px; }
 .profile-section input[disabled] { background-color: #e9ecef; cursor: not-allowed; opacity: 0.7; }
 
-/* --- 13. ANIMAÇÕES GERAIS E RESPONSIVIDADE --- */
+/* --- 13. AJUSTE PARA TEXTOS LONGOS NAS ETIQUETAS --- */
+.status-tag {
+    max-width: 180px; /* Define uma largura máxima */
+    white-space: nowrap; /* Impede a quebra de linha */
+    overflow: hidden; /* Esconde o texto que transborda */
+    text-overflow: ellipsis; /* Adiciona o "..." */
+    vertical-align: middle; /* Garante o alinhamento vertical */
+}
+
+/* --- 14. ANIMAÇÕES GERAIS E RESPONSIVIDADE --- */
 body, .main-header, dialog, .profile-section, .secondary-btn, #buscaInput, #filtroFase, #filtroOrdenacao, .form-group input, .form-group select { transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease; }
 @keyframes slideInUp { from { transform: translate(-50%, -60%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
 dialog[open] { animation: slideInUp 0.4s ease-out forwards; }

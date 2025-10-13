@@ -9,7 +9,7 @@ import AddNucleoModal from '../components/AddNucleoModal';
 import ManageNucleoModal from '../components/ManageNucleoModal';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 
-const FASES = ["Instauração", "Notificação e Buscas", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado"];
+const FASES = ["Instauração", "Notificação e Buscas","Análise de Cadastro Sócio Econômico", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado"];
 
 function App() {
     const { theme, setTheme } = useAuth(); // Pega o tema do contexto

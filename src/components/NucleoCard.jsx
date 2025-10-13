@@ -6,7 +6,7 @@ const normalizarTexto = (texto) => {
 };
 
 function NucleoCard({ nucleo, onView, onEdit, onDelete }) {
-    const FASES = ["Instauração", "Notificação e Buscas", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado"];
+    const FASES = ["Instauração", "Notificação e Buscas", "Análise de Cadastro Sócio Econômico", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado"];
     const { nome, decreto, dataInstauracao, fase, pendencia } = nucleo;
 
     const faseAtualIndex = FASES.findIndex(f => f === fase?.nome);
@@ -24,7 +24,7 @@ function NucleoCard({ nucleo, onView, onEdit, onDelete }) {
             </div>
             <div className="progress-bar-container"><div className="progress-bar" style={{ width: `${progresso}%` }}></div></div>
             <div className="card-body">
-                <div className="info-item"><span className="label">Fase Atual:</span><span className={`value status-tag ${faseClassName}`}>{fase?.nome || 'Indefinida'}</span></div>
+                <div className="info-item"><span className="label">Fase Atual:</span><span className={`value status-tag ${faseClassName}`} title={fase?.nome || 'Fase Indefinida'}>{fase?.nome || 'Indefinida'}</span></div>
                 <div className="info-item"><span className="label">Responsável:</span><span className="value">{fase?.atribuidoA || 'N/A'}</span></div>
                 <div className="info-item"><span className="label">Data da Fase:</span><span className="value">{dataFaseFormatada}</span></div>
                 <div className="info-item"><span className="label">Pendência:</span><span className="value">{pendenciaInfo}</span></div>
