@@ -35,6 +35,7 @@ body { font-family: var(--font-family); background-color: var(--bg-color); color
 .info-item .label { font-weight: 500; color: var(--text-light); }
 .info-item .value { font-weight: 500; }
 .status-tag, .pendencia-tag { padding: 5px 12px; border-radius: 20px; font-size: .8rem; font-weight: 700; color: white; }
+.status-tag.fase-pendente-de-instrucoes { background-color: #6c757d; }
 .status-tag.fase-instauracao { background-color: #007AFF; }
 .status-tag.fase-notificacao-e-buscas { background-color: #fd7e14; }
 .status-tag.fase-analise-de-cadastro-socio-economico { background-color: #d63384; }
@@ -44,6 +45,7 @@ body { font-family: var(--font-family); background-color: var(--bg-color); color
 .status-tag.fase-cartorio { background-color: #8B4513; }
 .status-tag.fase-titulacao { background-color: #ffc107; color: #212529; }
 .status-tag.fase-finalizado { background-color: #198754; }
+.status-tag.fase-indeferido { background-color: #b02a37; }
 .pendencia-tag.sim { background-color: var(--danger-color); }
 .pendencia-tag.nao { background-color: var(--success-color); }
 .card-footer { display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 20px; }
