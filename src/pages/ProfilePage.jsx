@@ -2,9 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { db } from '../firebase/config';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { db, firebase } from '../firebase/config';
 import { toast } from 'react-toastify';
 
 function ProfilePage() {

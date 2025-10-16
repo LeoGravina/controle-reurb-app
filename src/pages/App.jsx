@@ -116,11 +116,21 @@ function App() {
             {selectedNucleo && (
               <>
                 <ManageNucleoModal isOpen={isManageModalOpen} onClose={() => setManageModalOpen(false)} nucleo={selectedNucleo} fases={FASES} initialMode={initialModalMode} />
-                <ConfirmDeleteModal isOpen={isDeleteModalOpen} onClose={() => setDeleteModalOpen(false)} nucleo={selectedNucleo} />
+                <ConfirmDeleteModal isOpen={isDeleteModalOpen} onClose={() => setDeleteModalOpen(false)} item={selectedNucleo} onConfirm={() => {
+                    // Lógica de exclusão aqui
+                    if (!selectedNucleo) return;
+                    nucleosCollection.doc(selectedNucleo.id).delete()
+                        .then(() => {
+                            toast.success(`Núcleo "${selectedNucleo.nome}" foi excluído.`);
+                            setDeleteModalOpen(false);
+                        })
+                        .catch(() => {
+                            toast.error("Erro ao excluir o núcleo.");
+                        });
+                }} />
               </>
             )}
             
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme={theme} />
         </>
     );
 }
