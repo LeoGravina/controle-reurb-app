@@ -9,21 +9,9 @@ import NucleosGrid from '../components/NucleosGrid';
 import AddNucleoModal from '../components/AddNucleoModal';
 import ManageNucleoModal from '../components/ManageNucleoModal';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import NucleoCardSkeleton from '../components/NucleoCardSkeleton'; // Importando o Skeleton
 
-// LISTA DE FASES ATUALIZADA
-const FASES = [
-    "Pendente de Instruções", // NOVA FASE
-    "Instauração",
-    "Notificação e Buscas",
-    "Análise Sócio-Econômica",
-    "Urbanismo",
-    "Ambiental",
-    "Jurídico",
-    "Cartório",
-    "Titulação",
-    "Finalizado",
-    "Indeferido" // NOVA FASE
-];
+const FASES = [ "Pendente de Instruções", "Instauração", "Notificação e Buscas", "Análise Sócio-Econômica", "Urbanismo", "Ambiental", "Jurídico", "Cartório", "Titulação", "Finalizado", "Indeferido" ];
 
 function App() {
     const [todosNucleos, setTodosNucleos] = useState([]);
@@ -37,6 +25,7 @@ function App() {
     const [selectedNucleo, setSelectedNucleo] = useState(null);
     const [initialModalMode, setInitialModalMode] = useState('view');
     
+    // O controle de tema foi movido para o AuthContext, mas se estiver usando aqui, pode manter.
     const [theme, setTheme] = useState(() => {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) return savedTheme;
@@ -68,9 +57,17 @@ function App() {
         }
         nucleosProcessados.sort((a, b) => {
             switch (ordenacao) {
-                case 'data_recente': return new Date(b.fase?.data || b.dataInstauracao) - new Date(a.fase?.data || a.dataInstauracao);
-                case 'nome_desc': return b.nome.localeCompare(a.nome);
-                default: return a.nome.localeCompare(b.nome);
+                case 'data_recente': 
+                    // Tratamento para datas inválidas ou ausentes
+                    const dateA = new Date(a.fase?.data || a.dataInstauracao);
+                    const dateB = new Date(b.fase?.data || b.dataInstauracao);
+                    if (isNaN(dateA)) return 1;
+                    if (isNaN(dateB)) return -1;
+                    return dateB - dateA;
+                case 'nome_desc': 
+                    return b.nome.localeCompare(a.nome);
+                default: 
+                    return a.nome.localeCompare(b.nome);
             }
         });
         return nucleosProcessados;
@@ -87,6 +84,13 @@ function App() {
         setDeleteModalOpen(true);
     };
 
+    // --- FUNÇÃO ADICIONADA AQUI ---
+    const handleLimparFiltros = () => {
+        setBusca('');
+        setFiltroFase('todas');
+        setOrdenacao('nome_asc');
+    };
+
     return (
         <>
             <Header 
@@ -94,22 +98,30 @@ function App() {
                 onBuscaChange={setBusca}
                 filtroFase={filtroFase}
                 onFiltroFaseChange={setFiltroFase}
-                onAbrirModal={() => setAddModalOpen(true)}
-                fases={FASES}
                 ordenacao={ordenacao}
                 onOrdenacaoChange={setOrdenacao}
+                onAbrirModal={() => setAddModalOpen(true)}
+                fases={FASES}
                 theme={theme}
                 setTheme={setTheme}
+                // --- PROP ADICIONADA AQUI ---
+                onLimparFiltros={handleLimparFiltros}
             />
             <main className="container">
-                {loading ? <p>Carregando núcleos...</p> : 
+                {loading ? (
+                    <div id="nucleosGrid">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <NucleoCardSkeleton key={index} />
+                        ))}
+                    </div>
+                 ) : (
                     <NucleosGrid 
                         nucleos={nucleosFiltrados} 
                         onView={(nucleo) => handleOpenManageModal(nucleo, 'view')}
                         onEdit={(nucleo) => handleOpenManageModal(nucleo, 'edit')}
                         onDelete={handleOpenDeleteModal} 
                     />
-                }
+                )}
             </main>
             
             <AddNucleoModal isOpen={isAddModalOpen} onClose={() => setAddModalOpen(false)} fases={FASES} />
@@ -120,6 +132,7 @@ function App() {
               </>
             )}
             
+            {/* O ToastContainer global pode vir do seu main.jsx, se preferir */}
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme={theme} />
         </>
     );

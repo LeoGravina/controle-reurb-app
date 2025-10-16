@@ -13,8 +13,13 @@ body { font-family: var(--font-family); background-color: var(--bg-color); color
 #buscaInput, #filtroFase, #filtroOrdenacao { padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; background-color: var(--card-bg); color: var(--text-color); font-family: var(--font-family); }
 #buscaInput:focus, #filtroFase:focus, #filtroOrdenacao:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
 
+/* --- Adicione em CABEÇALHO E BARRA DE FERRAMENTAS (#2) --- */
+.logo-container {display: flex;align-items: center;gap: 15px;}
+.logo-container img {height: 60px; width: auto;}
+
+
 /* --- 3. BOTÕES --- */
-.primary-btn, .secondary-btn, .danger-btn, .success-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: none; border-radius: 8px; font-size: .95rem; font-weight: 500; cursor: pointer; transition: background-color .2s ease; text-decoration: none; /* Remove o sublinhado de links com classe de botão */ }
+.primary-btn, .secondary-btn, .danger-btn, .success-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: none; border-radius: 8px; font-size: .95rem; font-weight: 500; cursor: pointer; transition: background-color .2s ease; text-decoration: none; transition: transform 0.1s ease ; transform:scale(0.97); }
 .primary-btn { background-color: var(--primary-color); color: white; }
 .primary-btn:hover { background-color: var(--primary-hover); }
 .secondary-btn { background-color: #e9ecef; color: var(--text-color); }
@@ -183,4 +188,265 @@ dialog[open]::backdrop { animation: fadeInBackdrop 0.4s ease-out forwards; }
     .profile-layout { grid-template-columns: 1fr; }
     .profile-header-content { justify-content: center; }
     .profile-header-content h1 { width: 100%; text-align: center; }
+}
+
+/* --- 15. ESTILOS PARA O DROPDOWN DE FILTROS (VERSÃO FINAL COM HOVER MELHORADO) --- */
+
+.toolbar {
+    align-items: center; 
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filtro-container {
+    position: relative; 
+}
+
+.filtro-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    z-index: 100;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.filtro-dropdown.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+}
+
+.filtro-dropdown label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.filtro-dropdown select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin-bottom: 15px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    cursor: pointer;
+    
+    /* --- ALTERADO --- */
+    /* Prepara o elemento para todas as animações de hover */
+    transition: all 0.2s ease-in-out;
+}
+
+/* --- ALTERADO --- */
+/* Efeito de hover muito mais perceptível */
+.filtro-dropdown select:hover {
+    border-color: var(--primary-hover);
+    background-color: var(--card-bg); /* Muda o fundo para se destacar */
+    transform: translateY(-2px); /* Levanta o elemento sutilmente */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Adiciona uma sombra para profundidade */
+}
+
+:root[data-theme="dark"] .filtro-dropdown select {
+    background-color: #2c2c2c;
+    border-color: #555;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23e0e0e0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* --- ADICIONADO --- */
+/* Garante que a sombra do hover funcione bem no modo escuro */
+:root[data-theme="dark"] .filtro-dropdown select:hover {
+    background-color: #3a3a3a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.filtro-dropdown select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.filtro-dropdown select:last-of-type {
+    margin-bottom: 0;
+}
+
+/* --- 16. ESTILOS PARA SKELETON LOADING --- */
+.nucleo-card-skeleton {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.skeleton-line, .skeleton-icon {
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+}
+:root[data-theme="dark"] .skeleton-line, :root[data-theme="dark"] .skeleton-icon {
+    background: linear-gradient(90deg, #2c2c2c 25%, #3a3a3a 50%, #2c2c2c 75%);
+    background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton-line.title { height: 24px; width: 60%; margin-bottom: 10px; }
+.skeleton-line.subtitle { height: 16px; width: 40%; }
+.skeleton-body { margin: 20px 0; }
+.skeleton-line.info { height: 18px; width: 90%; margin-bottom: 12px; }
+.skeleton-footer { display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+.skeleton-icon { width: 38px; height: 38px; }
+
+/* --- 17. ESTILOS PARA BOTÃO DE LIMPAR FILTROS E TOOLTIP --- */
+
+.filtro-dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filtro-dropdown-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Estilo base do botão de ícone com tooltip */
+.icon-btn-tooltip {
+    position: relative; /* Essencial para o posicionamento do tooltip */
+    background: none;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-btn-tooltip:hover {
+    background-color: #e9ecef;
+    color: var(--text-color);
+}
+
+:root[data-theme="dark"] .icon-btn-tooltip:hover {
+    background-color: #3a3a3a;
+}
+
+/* Estilo do tooltip (o balãozinho) */
+.icon-btn-tooltip::before {
+    content: attr(data-tooltip); /* Pega o texto do atributo 'data-tooltip' */
+    position: absolute;
+    bottom: 120%; /* Posiciona acima do botão */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background-color: #333;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap; /* Impede que o texto quebre linha */
+    
+    /* Animação de entrada */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 101;
+}
+
+/* A setinha do tooltip */
+.icon-btn-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%); /* Posiciona a seta na base do balão */
+    border: 5px solid transparent;
+    border-top-color: #333;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 101;
+}
+
+/* Mostra o tooltip e a setinha ao passar o mouse */
+.icon-btn-tooltip:hover::before,
+.icon-btn-tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- 18. ESTILOS PARA PÁGINA DE LOGIN --- */
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    padding: 20px;
+}
+
+.login-form {
+    padding: 40px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-logo {
+    height: 60px; /* Você pode ajustar a altura do logo aqui */
+    width: auto;
+    margin-bottom: 20px;
+}
+
+.login-form h2 {
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.login-form .primary-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.login-error {
+    color: var(--danger-color);
+    text-align: center;
+    margin-bottom: 15px;
 }
