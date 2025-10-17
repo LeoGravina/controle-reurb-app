@@ -1,8 +1,13 @@
 // src/pages/App.jsx
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { nucleosCollection } from '../firebase/config';
+import jsPDF from 'jspdf';
+// 1. IMPORTAÇÃO CORRIGIDA: Importando a função 'autoTable' diretamente
+import autoTable from 'jspdf-autotable';
+import { CSVLink } from 'react-csv';
 
 // Componentes
 import Header from '../components/Header';
@@ -30,6 +35,7 @@ function App() {
     const [initialModalMode, setInitialModalMode] = useState('view');
     
     const { theme, setTheme } = useAuth();
+    const csvLinkRef = useRef(null);
 
     useEffect(() => {
         const unsubscribe = nucleosCollection.orderBy("nome").onSnapshot(snapshot => {
@@ -72,8 +78,7 @@ function App() {
                 case 'data_recente': 
                     const dateA = new Date(a.fase?.data || a.dataInstauracao);
                     const dateB = new Date(b.fase?.data || b.dataInstauracao);
-                    if (isNaN(dateA)) return 1;
-                    if (isNaN(dateB)) return -1;
+                    if (isNaN(dateA)) return 1; if (isNaN(dateB)) return -1;
                     return dateB - dateA;
                 case 'nome_desc': 
                     return b.nome.localeCompare(a.nome);
@@ -83,29 +88,58 @@ function App() {
         });
         return nucleosProcessados;
     }, [todosNucleos, busca, filtroFase, ordenacao, filtroPendencia]);
+
+    const getFormattedDate = () => new Date().toISOString().split('T')[0];
+
+    const handleExportCSV = () => csvLinkRef.current.link.click();
+
+    const handleExportPDF = () => {
+        try {
+            const doc = new jsPDF();
+            const tableColumns = ["Nome do Núcleo", "Decreto", "Fase Atual", "Responsável", "Pendência"];
+            const tableRows = nucleosFiltrados.map(n => [
+                n.nome,
+                n.decreto,
+                n.fase?.nome || 'N/A',
+                n.fase?.atribuidoA || 'N/A',
+                n.pendencia?.ativa ? `Sim` : 'Não',
+            ]);
+
+            doc.text("Relatório de Processos de REURB", 14, 15);
+            doc.setFontSize(10);
+            doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 14, 20);
+            
+            // 2. CHAMADA CORRIGIDA: Usando a função 'autoTable' diretamente
+            autoTable(doc, { 
+                head: [tableColumns], 
+                body: tableRows, 
+                startY: 25 
+            });
+
+            doc.save(`relatorio-reurb-${getFormattedDate()}.pdf`);
+            toast.success("Relatório PDF gerado com sucesso!");
+
+        } catch (error) {
+            console.error("Erro ao gerar PDF:", error);
+            toast.error("Ocorreu um erro inesperado ao gerar o PDF.");
+        }
+    };
     
-    const handleOpenManageModal = (nucleo, mode = 'view') => {
-        setSelectedNucleo(nucleo);
-        setInitialModalMode(mode);
-        setManageModalOpen(true);
-    };
-
-    const handleOpenDeleteModal = (nucleo) => {
-        setSelectedNucleo(nucleo);
-        setDeleteModalOpen(true);
-    };
-
-    const handleLimparFiltros = () => {
-        setBusca('');
-        setFiltroFase('todas');
-        setOrdenacao('nome_asc');
-        setFiltroPendencia(null);
-    };
-
+    const csvData = useMemo(() => {
+        const headers = ["Nome", "Decreto", "Data Instauração", "Fase Atual", "Responsável", "Data da Fase", "Pendência", "Descrição Pendência"];
+        const data = nucleosFiltrados.map(n => ({
+            nome: n.nome, decreto: n.decreto, dataInstauracao: n.dataInstauracao, faseAtual: n.fase?.nome || 'N/A',
+            responsavel: n.fase?.atribuidoA || 'N/A', dataFase: n.fase?.data || 'N/A',
+            pendencia: n.pendencia?.ativa ? 'Sim' : 'Não', descricao: n.pendencia?.descricao || ''
+        }));
+        return [headers, ...data.map(Object.values)];
+    }, [nucleosFiltrados]);
+    
+    const handleOpenManageModal = (nucleo, mode = 'view') => { setSelectedNucleo(nucleo); setInitialModalMode(mode); setManageModalOpen(true); };
+    const handleOpenDeleteModal = (nucleo) => { setSelectedNucleo(nucleo); setDeleteModalOpen(true); };
+    const handleLimparFiltros = () => { setBusca(''); setFiltroFase('todas'); setOrdenacao('nome_asc'); setFiltroPendencia(null); };
     const handleKpiClick = (tipo) => {
-        setBusca('');
-        setFiltroFase('todas');
-        setFiltroPendencia(null);
+        setBusca(''); setFiltroFase('todas'); setFiltroPendencia(null);
         switch (tipo) {
             case 'finalizados': setFiltroFase('Finalizado'); break;
             case 'pendencia': setFiltroPendencia(true); break;
@@ -117,40 +151,26 @@ function App() {
     return (
         <>
             <Header 
-                busca={busca}
-                onBuscaChange={setBusca}
-                filtroFase={filtroFase}
-                onFiltroFaseChange={setFiltroFase}
-                ordenacao={ordenacao}
-                onOrdenacaoChange={setOrdenacao}
-                onAbrirModal={() => setAddModalOpen(true)}
-                fases={FASES}
-                theme={theme}
-                setTheme={setTheme}
-                onLimparFiltros={handleLimparFiltros}
+                busca={busca} onBuscaChange={setBusca} filtroFase={filtroFase} onFiltroFaseChange={setFiltroFase}
+                ordenacao={ordenacao} onOrdenacaoChange={setOrdenacao} onAbrirModal={() => setAddModalOpen(true)}
+                fases={FASES} theme={theme} setTheme={setTheme} onLimparFiltros={handleLimparFiltros}
+                onExportCSV={handleExportCSV} onExportPDF={handleExportPDF}
             />
+            
+            <CSVLink data={csvData} filename={`relatorio-reurb-${getFormattedDate()}.csv`} className="hidden" ref={csvLinkRef} target="_blank" />
             
             <main className="container">
                 <KpiDashboard 
-                    total={metricas.total}
-                    finalizados={metricas.finalizados}
-                    comPendencia={metricas.comPendencia}
-                    faseComum={metricas.faseComum}
-                    onKpiClick={handleKpiClick}
-                    filtroFaseAtivo={filtroFase}
-                    filtroPendenciaAtivo={filtroPendencia}
+                    total={metricas.total} finalizados={metricas.finalizados} comPendencia={metricas.comPendencia} faseComum={metricas.faseComum}
+                    onKpiClick={handleKpiClick} filtroFaseAtivo={filtroFase} filtroPendenciaAtivo={filtroPendencia}
                 />
                 
                 {loading ? (
-                    <div id="nucleosGrid">
-                        {Array.from({ length: 6 }).map((_, index) => <NucleoCardSkeleton key={index} />)}
-                    </div>
+                    <div id="nucleosGrid">{Array.from({ length: 6 }).map((_, index) => <NucleoCardSkeleton key={index} />)}</div>
                  ) : (
                     <NucleosGrid 
-                        nucleos={nucleosFiltrados} 
-                        onView={(nucleo) => handleOpenManageModal(nucleo, 'view')}
-                        onEdit={(nucleo) => handleOpenManageModal(nucleo, 'edit')}
-                        onDelete={handleOpenDeleteModal} 
+                        nucleos={nucleosFiltrados} onView={(n) => handleOpenManageModal(n, 'view')}
+                        onEdit={(n) => handleOpenManageModal(n, 'edit')} onDelete={handleOpenDeleteModal} 
                     />
                 )}
             </main>

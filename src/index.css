@@ -604,3 +604,45 @@ dialog[open]::backdrop { animation: fadeInBackdrop 0.4s ease-out forwards; }
     color: var(--text-light);
     font-style: italic;
 }
+
+/* --- 22. DROPDOWN DE EXPORTAÇÃO --- */
+
+.export-container {
+    position: relative;
+}
+
+.export-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 200px; /* Um pouco mais estreito que o de filtros */
+    z-index: 100;
+    padding: 8px;
+    
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.export-dropdown.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+}
+
+/* Reutilizando o estilo do dropdown de usuário para os botões */
+.export-dropdown .dropdown-item {
+    width: 100%;
+    /* Adicionando gap para o caso de ter ícones no futuro */
+    gap: 12px; 
+}
+
+/* Para esconder o link do react-csv */
+.hidden {
+    display: none;
+}
