@@ -450,3 +450,157 @@ dialog[open]::backdrop { animation: fadeInBackdrop 0.4s ease-out forwards; }
     text-align: center;
     margin-bottom: 15px;
 }
+
+/* --- 19. PAINEL DE MÉTRICAS (KPI DASHBOARD) --- */
+
+.kpi-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.kpi-card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color); /* Borda um pouco mais grossa */
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer; /* Mãozinha ao passar o mouse */
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+}
+
+/* ESTILO DO CARD ATIVO */
+.kpi-card.ativo {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 123, 255, 0.05); /* Um fundo azul bem sutil */
+}
+:root[data-theme="dark"] .kpi-card.ativo {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.kpi-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Impede que o ícone encolha */
+    color: var(--primary-color);
+}
+
+.kpi-card:nth-child(1) .kpi-icon { color: var(--primary-color); }
+.kpi-card:nth-child(2) .kpi-icon { color: var(--success-color); }
+.kpi-card:nth-child(3) .kpi-icon { color: var(--danger-color); }
+.kpi-card:nth-child(4) .kpi-icon { color: #6f42c1; }
+
+.kpi-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-valor {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1.1;
+}
+
+.kpi-titulo {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+    white-space: nowrap; /* Impede quebra de linha no título */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- 20. HISTÓRICO DE ALTERAÇÕES NO MODAL --- */
+
+.modal-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 25px;
+}
+
+.tab-btn {
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-light);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    color: var(--text-color);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.historico-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.historico-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.historico-icon {
+    background-color: #e9ecef;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+:root[data-theme="dark"] .historico-icon {
+    background-color: #3a3a3a;
+}
+
+.historico-content p {
+    margin: 0;
+}
+
+.historico-acao {
+    font-weight: 500;
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+.historico-meta {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 4px;
+}
+
+.historico-info {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-light);
+    font-style: italic;
+}
