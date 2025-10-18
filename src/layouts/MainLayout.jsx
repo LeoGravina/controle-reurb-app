@@ -1,27 +1,17 @@
 // src/layouts/MainLayout.jsx
 
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { useAuth } from '../context/AuthContext';
-import App from '../pages/App';
+import Footer from '../components/Footer'; // Importando o Footer
 
+// Este componente agora é responsável apenas pela estrutura e pelo rodapé.
 function MainLayout() {
-    const { theme, setTheme } = useAuth();
-
     return (
-        <>
-            <Header 
-                theme={theme}
-                setTheme={setTheme}
-            />
-
-            <div className="site-wrapper">
-                <Outlet />
-                <Footer />
-            </div>
-        </>
+        <div className="site-wrapper">
+            {/* O Outlet renderizará o componente da rota (App, ProfilePage, etc.) */}
+            <Outlet />
+            <Footer />
+        </div>
     );
 }
 

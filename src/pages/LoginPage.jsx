@@ -8,6 +8,8 @@ import { db, auth } from '../firebase/config';
 import logoPrefeitura from '../assets/logo-prefeitura.png';
 
 function LoginPage() {
+    console.log("ID do Projeto lido do .env:", import.meta.env.VITE_FIREBASE_PROJECT_ID);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');

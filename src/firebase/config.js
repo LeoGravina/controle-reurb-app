@@ -6,19 +6,18 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyByqtK3WiTOj-OChgmzR_TJvsQP_YTAOo4",
-    authDomain: "controle-reurb-5fd56.firebaseapp.com",
-    projectId: "controle-reurb-5fd56",
-    storageBucket: "controle-reurb-5fd56.appspot.com",
-    messagingSenderId: "295943977011",
-    appId: "1:295943977011:web:d7eaa507d7a4c428ca0b46"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
-// Criamos e exportamos as instâncias que serão usadas em todo o app
 const auth = firebase.auth();
 const db = firebase.firestore();
 const functions = firebase.app().functions('us-central1');

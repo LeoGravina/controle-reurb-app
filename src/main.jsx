@@ -34,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           
+          {/* Rotas protegidas que usarão o MainLayout (com Header e Footer) */}
           <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
             <Route path="/" element={<App />} />
             <Route path="/perfil" element={<ProfilePage />} />

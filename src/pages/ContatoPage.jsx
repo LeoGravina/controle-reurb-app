@@ -18,11 +18,11 @@ function ContatoPage() {
                         <FiMail size={20} />
                         <span>leonardocarlos807@gmail.com</span>
                     </a>
-                    <a href="https://wa.me/5532999999999" target="_blank" rel="noopener noreferrer" className="contato-item">
+                    <a href="https://wa.me/5532984057124" target="_blank" rel="noopener noreferrer" className="contato-item">
                         <FiPhone size={20} />
                         <span>(32) 98405-7124</span>
                     </a>
-                    <a href="https://linkedin.com/in/seu-usuario" target="_blank" rel="noopener noreferrer" className="contato-item">
+                    <a href="https://www.linkedin.com/in/leonardo-gravina-a770bb237" target="_blank" rel="noopener noreferrer" className="contato-item">
                         <FiLinkedin size={20} />
                         <span>LinkedIn</span>
                     </a>
