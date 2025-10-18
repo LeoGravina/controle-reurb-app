@@ -258,3 +258,109 @@ dialog[open]::backdrop { animation: fadeInBackdrop 0.4s ease-out forwards; }
 .export-dropdown.show { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
 .export-dropdown .dropdown-item { width: 100%; gap: 12px; }
 .hidden { display: none; }
+
+/* --- 23. ESTILOS DO FOOTER E PÁGINA DE CONTATO --- */
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main.container {
+    flex-grow: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
+}
+
+.main-footer {
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 25px 0;
+    margin-top: 60px; /* Espaçamento acima do rodapé */
+    flex-shrink: 0; /* Impede que o rodapé encolha */
+    text-align: center;
+}
+
+.footer-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.footer-content p:first-child {
+    margin-bottom: 5px;
+}
+
+.footer-content a {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.footer-content a:hover {
+    text-decoration: underline;
+}
+
+/* Página de Contato */
+.contato-page-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.contato-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.contato-title {
+    font-size: 1.75rem;
+    margin-bottom: 5px;
+}
+
+.contato-subtitle {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.contato-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.contato-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.contato-item:hover {
+    background-color: #e9ecef;
+    color: var(--primary-color);
+}
+
+:root[data-theme="dark"] .contato-item:hover {
+    background-color: #2c2c2c;
+}
+
+.contato-item svg {
+    flex-shrink: 0;
+}

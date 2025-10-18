@@ -3,10 +3,12 @@
 import { Outlet } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '../components/Header';
-import { useAuth } from '../context/AuthContext'; // Precisamos do useAuth para o tema
+import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
+import App from '../pages/App';
 
 function MainLayout() {
-    const { theme, setTheme } = useAuth(); // Puxa o tema do contexto
+    const { theme, setTheme } = useAuth();
 
     return (
         <>
@@ -15,7 +17,10 @@ function MainLayout() {
                 setTheme={setTheme}
             />
 
-            <Outlet />
+            <div className="site-wrapper">
+                <Outlet />
+                <Footer />
+            </div>
         </>
     );
 }
