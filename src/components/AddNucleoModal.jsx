@@ -43,17 +43,52 @@ function AddNucleoModal({ isOpen, onClose, fases }) {
 
     const handleClose = () => { setNome(''); setData(''); setDecreto(''); setResponsavel(''); onClose(); };
     
+    // O <dialog> já será centralizado pela correção no CSS
     return (
         <dialog ref={dialogRef} onClose={handleClose}>
-            <form onSubmit={handleSubmit}>
+            
+            {/* 1. Adiciona o Cabeçalho */}
+            <div className="modal-header">
                 <h2>Adicionar Novo Núcleo</h2>
-                <p>Preencha as informações básicas do núcleo.</p>
-                {notification.message && (<div className={`modal-notification ${notification.type}`}>{notification.message}</div>)}
-                <div className="form-group"><label>Nome do Núcleo:</label><input type="text" value={nome} onChange={(e) => setNome(e.target.value)} required /></div>
-                <div className="form-group"><label>Data de Instauração:</label><input type="date" value={data} onChange={(e) => setData(e.target.value)} required /></div>
-                <div className="form-group"><label>Nº do Decreto:</label><input type="text" value={decreto} onChange={(e) => setDecreto(e.target.value)} required /></div>
-                <div className="form-group"><label>Responsável:</label><input type="text" placeholder="Nome do responsável inicial" value={responsavel} onChange={(e) => setResponsavel(e.target.value)} required /></div>
-                <div className="form-actions"><button type="button" className="secondary-btn" onClick={handleClose}>Cancelar</button><button type="submit" className="primary-btn">Salvar</button></div>
+            </div>
+            
+            <form onSubmit={handleSubmit}>
+                {/* 2. Adiciona o Corpo */}
+                <div className="modal-body">
+                    <p style={{ marginTop: 0, marginBottom: '20px' }}>
+                        Preencha as informações básicas do núcleo.
+                    </p>
+                    <div className="form-group">
+                        <label htmlFor="nome-nucleo">Nome do Núcleo:</label>
+                        <input id="nome-nucleo" type="text" value={nome} onChange={(e) => setNome(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="data-inst">Data de Instauração:</label>
+                        <input id="data-inst" type="date" value={data} onChange={(e) => setData(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="num-decreto">Nº do Decreto:</label>
+                        <input id="num-decreto" type="text" value={decreto} onChange={(e) => setDecreto(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="resp-inicial">Responsável:</label>
+                        <input id="resp-inicial" type="text" placeholder="Nome do responsável inicial" value={responsavel} onChange={(e) => setResponsavel(e.target.value)} required />
+                    </div>
+                    {/* Container de Notificação (opcional, mas bom) */}
+                    {notification.message && (
+                         <div className="modal-notification-container">
+                            <div className={`modal-notification ${notification.type}`}>
+                                {notification.message}
+                            </div>
+                         </div>
+                    )}
+                </div>
+
+                {/* 3. Adiciona as Ações (Rodapé) */}
+                <div className="form-actions">
+                    <button type="button" className="secondary-btn" onClick={handleClose}>Cancelar</button>
+                    <button type="submit" className="primary-btn">Salvar</button>
+                </div>
             </form>
         </dialog>
     );
