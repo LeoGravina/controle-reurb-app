@@ -281,8 +281,14 @@ dialog[open]::backdrop { animation: fadeInBackdrop 0.3s ease-out forwards; }
 .site-wrapper { display: flex; flex-direction: column; flex-grow: 1; } 
 main.container { flex-grow: 1; } 
 
+/* --- 24. ESTILO PARA MOSTRAR/ESCONDER SENHA --- */
+.password-input-wrapper { position: relative; }
+.password-toggle-btn { position: absolute; top: 50%;  right: 12px; transform: translateY(-50%); background: none; border: none; padding: 5px; cursor: pointer; color: var(--text-light); display: flex; align-items: center; justify-content: center; margin-top: 14px; }
+.password-input-wrapper input[type="password"],
+.password-input-wrapper input[type="text"] { padding-right: 45px; }
+.password-input-wrapper:not(:has(label)) .password-toggle-btn { margin-top: 0; }
 
-/* --- 24. RESPONSIVIDADE MELHORADA --- */
+/* --- 25. RESPONSIVIDADE MELHORADA --- */
 @media (max-width: 992px) { #nucleosGrid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } .kpi-dashboard { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
 @media (max-width: 768px) { .container { padding: 0 15px; } .toolbar { flex-direction: column; align-items: stretch; } .toolbar-actions { width: 100%; justify-content: space-between; margin-top: 15px; } .header-top-row { justify-content: center; text-align: center; } #nucleosGrid { grid-template-columns: 1fr; gap: 20px; } .kpi-dashboard { grid-template-columns: 1fr; gap: 15px; } .kpi-card { flex-direction: row; text-align: left; } .kpi-info { align-items: flex-start; } dialog { width: 95%; max-width: 95%; padding: 0; } .view-modal-body { max-height: 75vh; } .form-actions { flex-direction: column; gap: 15px; } .form-actions button { width: 100%; justify-content: center; } .profile-header-content { justify-content: center; text-align: center; } .contato-card { padding: 30px 20px; } }
 @media (max-width: 480px) { body { font-size: 14px; } .toolbar-actions { flex-wrap: wrap; justify-content: center; gap: 10px; } .filtro-dropdown, .export-dropdown { width: calc(100vw - 30px); left: 15px; transform: none; top: calc(100% + 5px); right: auto; } .kpi-valor { font-size: 1.6rem; } .kpi-titulo { font-size: 0.8rem; } .logo-container h1 { display: none; } .card-header h2 { font-size: 1.05rem; } .info-item { font-size: 0.85rem; } .status-tag, .pendencia-tag { font-size: 0.7rem; padding: 3px 8px; } .icon-btn { width: 32px; height: 32px; } .icon-btn svg { width: 14px; height: 14px; } .view-modal-header h2 { font-size: 1.2rem; } .view-modal-body { padding: 15px; } .view-modal-section legend { font-size: 0.9rem; } .form-actions { padding: 15px; } .contato-title { font-size: 1.4rem; } .contato-subtitle { font-size: 0.9rem; } .contato-item { font-size: 0.85rem; padding: 8px; } .main-footer { padding: 15px 0; margin-top: 40px; } .footer-content p { font-size: 0.8rem; } }
