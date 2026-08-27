@@ -15,6 +15,8 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+    // Sinaliza para a tela de login que o acesso do usuário foi desativado
+    const [accessDenied, setAccessDenied] = useState(false);
 
     // Gerenciamento do Tema agora vive aqui, no topo da árvore
     const [theme, setTheme] = useState(() => {
@@ -42,11 +44,19 @@ export function AuthProvider({ children }) {
                 // USA O onSnapshot para ouvir em tempo real
                 const userDocRef = db.collection('users').doc(user.uid);
                 unsubscribeProfile = userDocRef.onSnapshot(doc => {
-                    if (doc.exists) {
-                        setUserProfile(doc.data());
-                    } else {
-                        setUserProfile(null); 
+                    const profile = doc.exists ? doc.data() : null;
+
+                    // Usuário desativado pelo admin perde o acesso na hora,
+                    // mesmo que já estivesse com a sessão aberta.
+                    if (profile && profile.status === 'inativo') {
+                        setAccessDenied(true);
+                        setUserProfile(null);
+                        setLoading(false);
+                        firebase.auth().signOut();
+                        return;
                     }
+
+                    setUserProfile(profile);
                     setLoading(false);
                 });
             } else {
@@ -65,6 +75,10 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         userProfile,
+        // Perfis antigos não têm o campo 'role', então só é admin quem for marcado
+        isAdmin: userProfile?.role === 'admin',
+        accessDenied,
+        clearAccessDenied: () => setAccessDenied(false),
         theme,     // Fornece o tema
         setTheme   // Fornece a função para alterar o tema
     };

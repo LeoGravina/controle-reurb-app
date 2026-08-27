@@ -13,12 +13,19 @@ import App from './pages/App.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import ContatoPage from './pages/ContatoPage.jsx'; // Importe a nova página
+import AdminPage from './pages/AdminPage.jsx';
 
 import './index.css';
 
 function ProtectedRoute({ children }) {
     const { currentUser } = useAuth();
     return currentUser ? children : <Navigate to="/login" />;
+}
+
+// Só quem tem role 'admin' no Firestore chega na gestão de usuários
+function AdminRoute({ children }) {
+    const { isAdmin } = useAuth();
+    return isAdmin ? children : <Navigate to="/" />;
 }
 
 function GlobalToast() {
@@ -33,12 +40,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <GlobalToast />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          
+
           {/* Rotas protegidas que usarão o MainLayout (com Header e Footer) */}
           <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
             <Route path="/" element={<App />} />
             <Route path="/perfil" element={<ProfilePage />} />
             <Route path="/contato" element={<ContatoPage />} />
+            <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -20,5 +20,17 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const functions = firebase.app().functions('us-central1');
 const nucleosCollection = db.collection("nucleos");
+const usersCollection = db.collection("users");
 
-export { db, auth, functions, nucleosCollection, firebase };
+// App secundário: criar um usuário pelo SDK loga automaticamente com ele.
+// Fazendo isso em uma instância separada, a sessão do admin no app principal
+// permanece intacta.
+const SECONDARY_APP_NAME = 'Secondary';
+
+function getSecondaryAuth() {
+    const existingApp = firebase.apps.find(app => app.name === SECONDARY_APP_NAME);
+    const secondaryApp = existingApp || firebase.initializeApp(firebaseConfig, SECONDARY_APP_NAME);
+    return secondaryApp.auth();
+}
+
+export { db, auth, functions, nucleosCollection, usersCollection, getSecondaryAuth, firebase };

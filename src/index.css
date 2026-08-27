@@ -292,3 +292,66 @@ main.container { flex-grow: 1; }
 @media (max-width: 992px) { #nucleosGrid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } .kpi-dashboard { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
 @media (max-width: 768px) { .container { padding: 0 15px; } .toolbar { flex-direction: column; align-items: stretch; } .toolbar-actions { width: 100%; justify-content: space-between; margin-top: 15px; } .header-top-row { justify-content: center; text-align: center; } #nucleosGrid { grid-template-columns: 1fr; gap: 20px; } .kpi-dashboard { grid-template-columns: 1fr; gap: 15px; } .kpi-card { flex-direction: row; text-align: left; } .kpi-info { align-items: flex-start; } dialog { width: 95%; max-width: 95%; padding: 0; } .view-modal-body { max-height: 75vh; } .form-actions { flex-direction: column; gap: 15px; } .form-actions button { width: 100%; justify-content: center; } .profile-header-content { justify-content: center; text-align: center; } .contato-card { padding: 30px 20px; } }
 @media (max-width: 480px) { body { font-size: 14px; } .toolbar-actions { flex-wrap: wrap; justify-content: center; gap: 10px; } .filtro-dropdown, .export-dropdown { width: calc(100vw - 30px); left: 15px; transform: none; top: calc(100% + 5px); right: auto; } .kpi-valor { font-size: 1.6rem; } .kpi-titulo { font-size: 0.8rem; } .logo-container h1 { display: none; } .card-header h2 { font-size: 1.05rem; } .info-item { font-size: 0.85rem; } .status-tag, .pendencia-tag { font-size: 0.7rem; padding: 3px 8px; } .icon-btn { width: 32px; height: 32px; } .icon-btn svg { width: 14px; height: 14px; } .view-modal-header h2 { font-size: 1.2rem; } .view-modal-body { padding: 15px; } .view-modal-section legend { font-size: 0.9rem; } .form-actions { padding: 15px; } .contato-title { font-size: 1.4rem; } .contato-subtitle { font-size: 0.9rem; } .contato-item { font-size: 0.85rem; padding: 8px; } .main-footer { padding: 15px 0; margin-top: 40px; } .footer-content p { font-size: 0.8rem; } }
+/* --- 26. PÁGINA DE GESTÃO DE USUÁRIOS (ADMIN) --- */
+.admin-header-subtitle { font-size: 0.9rem; color: var(--text-light); margin: 5px 0 0; }
+.admin-header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.admin-page-content { max-width: 1000px; margin: 0 auto; padding-bottom: 40px; }
+.admin-search { display: flex; align-items: center; gap: 10px; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0 14px; margin-bottom: 25px; color: var(--text-light); }
+.admin-search input { flex-grow: 1; border: none; background: transparent; padding: 12px 0; font-size: 1rem; color: var(--text-color); outline: none; }
+.admin-table-wrapper { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 860px; }
+.admin-table th:nth-child(2) { width: 27%; }
+.admin-table th:nth-child(3) { width: 150px; }
+.admin-table th:nth-child(4) { width: 120px; }
+.admin-table th:nth-child(5) { width: 210px; }
+.admin-table th { text-align: left; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-light); padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
+.admin-table td { height: 68px; padding: 0 20px; border-bottom: 1px solid var(--border-color); font-size: 0.92rem; vertical-align: middle; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.admin-table tbody tr:last-child td { border-bottom: none; }
+.admin-table tbody tr { transition: background-color 0.2s ease; }
+.admin-table tbody tr:hover { background-color: var(--bg-color); }
+/* Coluna de botões: nunca truncar com reticências, o conteúdo não é texto */
+.admin-table .col-acoes { text-align: right; white-space: nowrap; text-overflow: clip; }
+.admin-table tr.linha-inativa { opacity: 0.6; }
+.admin-user-cell { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.admin-user-cell .user-avatar { flex-shrink: 0; }
+.admin-user-info { min-width: 0; overflow: hidden; }
+.admin-user-cell strong { display: block; font-weight: 600; line-height: 1.35; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.admin-username { display: block; font-size: 0.82rem; line-height: 1.35; color: var(--text-light); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.admin-email { color: var(--text-light); }
+.role-tag { padding: 4px 10px; border-radius: 16px; font-size: .72rem; font-weight: 700; display: inline-block; }
+.role-tag.admin { background-color: rgba(0, 122, 255, 0.12); color: var(--primary-color); }
+.role-tag.user { background-color: rgba(108, 117, 125, 0.15); color: var(--text-light); }
+.status-acesso { display: inline-flex; align-items: center; gap: 7px; font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+.status-acesso::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.status-acesso.ativo { color: var(--success-color); }
+.status-acesso.ativo::before { background-color: var(--success-color); }
+.status-acesso.inativo { color: var(--danger-color); }
+.status-acesso.inativo::before { background-color: var(--danger-color); }
+.admin-acao-btn { padding: 8px 14px; font-size: 0.85rem; }
+.admin-voce { font-size: 0.85rem; color: var(--text-light); font-style: italic; }
+.admin-empty { text-align: center; padding: 45px 20px; color: var(--text-light); font-style: italic; margin: 0; }
+:root[data-theme="dark"] .admin-search { background-color: #2c2c2c; border-color: #555; }
+:root[data-theme="dark"] .admin-table tbody tr:hover { background-color: #2c2c2c; }
+:root[data-theme="dark"] .role-tag.admin { background-color: rgba(0, 122, 255, 0.2); }
+:root[data-theme="dark"] .role-tag.user { background-color: rgba(160, 160, 160, 0.18); }
+@media (max-width: 768px) {
+    .admin-header-actions { width: 100%; justify-content: center; }
+    .admin-page-content { padding-left: 15px; padding-right: 15px; }
+}
+
+/* --- 27. TRAVA O SCROLL DA PÁGINA COM QUALQUER MODAL ABERTO --- */
+html { scrollbar-gutter: stable; }
+html:has(dialog[open]), body:has(dialog[open]) { overflow: hidden; }
+
+/* --- 28. SCROLLBARS --- */
+* { scrollbar-width: thin; scrollbar-color: #c4c9d0 transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background-color: #c4c9d0; border-radius: 10px; border: 2px solid var(--bg-color); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background-color: #a4abb5; }
+::-webkit-scrollbar-corner { background: transparent; }
+:root[data-theme="dark"] * { scrollbar-color: #4a4a4a transparent; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb { background-color: #4a4a4a; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e; }
+/* Dentro de cards a borda do polegar acompanha o fundo do card */
+.admin-table-wrapper::-webkit-scrollbar-thumb, .modal-body::-webkit-scrollbar-thumb, .view-modal-body::-webkit-scrollbar-thumb { border-color: var(--card-bg); }
